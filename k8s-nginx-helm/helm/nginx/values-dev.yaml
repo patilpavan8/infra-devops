@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.25"
+
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "250m"
+    memory: "128Mi"
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: nginx-dev.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+autoscaling:
+  enabled: false

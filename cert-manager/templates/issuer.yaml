@@ -1,0 +1,24 @@
+{{- if .Values.wildcardCertificate.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .Values.wildcardCertificate.issuer.name }}
+spec:
+  acme:
+    # The ACME server URL
+    server:  {{ .Values.wildcardCertificate.issuer.server }}
+    # Email address used for ACME registration
+    email: "patilpavan8@gmail.com"
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: {{ .Values.wildcardCertificate.issuer.name }}
+    # Enable the DNS-01 challenge provider
+    solvers:
+      - dns01:
+          azureDNS:
+            subscriptionID: {{ .Values.wildcardCertificate.issuer.dnsChallenge.azureDns.
+            subscriptionID }}
+            resourceGroupName: {{ .Values.wildcardCertificate.issuer.dnsChallenge.azureDns.resourceGroupName }}
+            hostedZoneName: {{ .Values.wildcardCertificate.issuer.dnsChallenge.azureDns.domain }}
+            environment: AzurePublicCloud
+{{- end }}

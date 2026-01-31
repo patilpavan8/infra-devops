@@ -1,0 +1,109 @@
+dynatrace-operator:
+  ##############################################################################
+  # Original Helm chart values
+  # https://github.com/Dynatrace/dynatrace-operator/blob/v1.1.0/config/helm/chart/default/values.yaml
+  ##############################################################################
+  operator:
+    nodeSelector: {}
+    tolerations: []
+    labels: []
+    annotations: []
+    apparmor: false
+    securityContext:
+      privileged: false
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+    podSecurityContext:
+      fsGroup: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seccompProfile:
+        type: RuntimeDefault
+      supplementalGroups: [1001]
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+      
+  webhook:
+    hostNetwork: false
+    nodeSelector: {}
+    tolerations: []
+    labels: []
+    annotations: []
+    apparmor: false
+    securityContext:
+      privileged: false
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+    podSecurityContext:
+      fsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      seccompProfile:
+        type: RuntimeDefault
+      supplementalGroups: [1001]
+    requests:
+      cpu: 300m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 128Mi
+    highAvailability: true
+    validatingWebhook:
+      timeoutSeconds: 10
+    mutatingWebhook:
+      timeoutSeconds: 10
+
+  csidriver:
+    enabled: false
+
+# The externalSecrets block in the values file in the gitops chart repo.
+# will look as below.
+# key - secretName in the k8s cluster namespace
+# version - secret version in the key vault
+# remoteRef - secret name in the key vault
+# Only the operator token is needed on the gitops repository
+externalSecrets:
+  dynatraceSecrets:
+    secrets: []
+    enabled: false
+
+# For instructions on how to determine the environment ID and how to configure the apiUrl address, see https://www.dynatrace.com/support/help/reference/dynatrace-concepts/environment-id/.
+# Should be supplied from gitops
+apiUrl: https://req24445.live.dynatrace.com/api
+
+# Dynakube resource name should be the name of the cluster
+clusterName: shared-test
+
+monitoredNamespaces:
+  - test-namespace
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 1.5Gi
+  limits:
+    memory: 1.5Gi
+
+feature:
+  k8sAppEnables: "true"
+  initContainerSeccompProfile: "true"
+  oneagentInitialConnectRetryMs: "6000"

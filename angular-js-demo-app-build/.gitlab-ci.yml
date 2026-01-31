@@ -1,0 +1,56 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_NAME: $CI_REGISTRY_IMAGE/angularjs-task-manager
+  IMAGE_TAG: latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - docker info
+
+# -----------------------
+# Build Docker Image
+# -----------------------
+build_image:
+  stage: build
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+  only:
+    - main
+    - master
+
+# -----------------------
+# Test Docker Image
+# -----------------------
+test_image:
+  stage: test
+  script:
+    - docker run -d -p 8080:80 --name test-container $IMAGE_NAME:$IMAGE_TAG
+    - sleep 5
+    - docker ps | grep test-container
+  after_script:
+    - docker stop test-container
+    - docker rm test-container
+  only:
+    - main
+    - master
+
+# -----------------------
+# Push Image to Registry
+# -----------------------
+deploy_image:
+  stage: deploy
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+  only:
+    - main
+    - master

@@ -1,0 +1,17 @@
+{{- if .Values.wildcardCertificate.enabled }}
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+metadata:
+  name: {{ include "cert-manager.fullname" . }}-certificate
+spec:
+  secretName: {{ include "cert-manager.fullname" . }}-secret
+  issuerRef:
+    name: {{ .Values.wildcardCertificate.issuer.name }}
+    kind: Issuer
+    group: cert-manager.io
+  dnsNames:
+    - '*.{{ .Values.wildcardCertificate.dnsName }}'
+  privateKey:
+    rotationPolicy: Always
+{{- end }}

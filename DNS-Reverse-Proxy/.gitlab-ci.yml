@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE: nginx-proxy:latest
+
+before_script:
+  - docker info
+
+build:
+  stage: build
+  script:
+    - docker build -t $DOCKER_IMAGE .
+  artifacts:
+    paths:
+      - docker/Dockerfile
+      - docker/nginx.conf
+      - nginx/proxy.conf
+
+deploy:
+  stage: deploy
+  script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
+    - ssh ubuntu@$SERVER_IP "
+        docker stop nginx || true
+        docker rm nginx || true
+        docker run -d --name nginx -p 80:80 $DOCKER_IMAGE
+      "
+  only:
+    - main

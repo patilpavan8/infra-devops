@@ -1,0 +1,12 @@
+apiVersion: v2
+name: dynatrace
+version: 1.0.0-SNAPSHOT
+description: Chart to deploy dynatrace for application monitoring
+
+dependencies:
+  # Source: https://github.com/Dynatrace/dynatrace-operator/blob/v1.1.0/config/helm/chart/default/Chart.yaml
+  # Releases: https://github.com/Dynatrace/dynatrace-operator/releases
+  - name: dynatrace-operator
+    version: 1.1.0
+    repository: oci://public.ecr.aws/dynatrace
+    
