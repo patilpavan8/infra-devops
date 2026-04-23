@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lamp-catalog.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: lamp-catalog
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8000

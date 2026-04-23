@@ -1,0 +1,17 @@
+stages:
+  - lint
+  - build
+  - deploy
+
+lint:
+  script:
+    - pip install -r starter-code/lamp-catalog-service/requirements.txt
+    - flake8 starter-code/lamp-catalog-service/app
+
+build:
+  script:
+    - docker build -t lamp-catalog:v1 starter-code/lamp-catalog-service
+
+deploy:
+  script:
+    - helm upgrade --install lamp ./helm/lamp-catalog

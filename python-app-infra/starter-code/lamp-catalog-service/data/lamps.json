@@ -1,0 +1,29 @@
+[
+  {
+    "id": "lamp-001",
+    "name": "Aurora",
+    "category": "pendant",
+    "price_eur": 12,
+    "currency": "USD",
+    "in_stock": false,
+    "tags": ["minimal", "warm-light", "kitchen"]
+  },
+  {
+    "id": "lamp-002",
+    "name": "Nordic",
+    "category": "floor",
+    "price_eur": 21,
+    "currency": "USD",
+    "in_stock": true,
+    "tags": ["living-room", "designer", "oak"]
+  },
+  {
+    "id": "lamp-003",
+    "name": "Halo",
+    "category": "desk",
+    "price_eur": 86,
+    "currency": "USD",
+    "in_stock": true,
+    "tags": ["office", "task-light", "compact"]
+  }
+]
