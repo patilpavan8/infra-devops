@@ -1,0 +1,17 @@
+web-cert-manager:
+
+  wildcardCertificate:
+    enabled: true
+    dnsName: 'dev.au.cfs.ci-web.com'
+    issuer:
+      name: "letsencrypt-prod"
+      server: "https://acme-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        azureDns:
+          subscriptionID: "9fc20093-b031-407c-af46-d452ec0b1c8e"
+          resourceGroupName: "cfswebau2-dev-zi4o"
+          domain: "dev.au.cfs.ci-web.com"
+
+  pushSecrets:
+    wildcardTlsCert:
+      enabled: true

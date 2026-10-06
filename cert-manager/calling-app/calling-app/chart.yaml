@@ -1,0 +1,9 @@
+apiVersion: v2
+name: web-cert-manager-main
+version: 0.1.0
+description: Chart to deploy web-cert-manager-main
+dependencies:
+  # https://gitlab.xxxxx.com/web/project/web/charts/web-cert-manager/-/blob/main/Chart.yaml
+  - name: web-cert-manager
+    version: 1.5.0
+    repository: oci://registry.xxxx.com/aci/customer-facing-solutions/web/charts
